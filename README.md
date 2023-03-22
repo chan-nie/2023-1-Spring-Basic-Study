@@ -9,8 +9,8 @@
 <br>
 
 ## 스터디원
-- 스터디장 : 조영서
-- 스터디원 : 정채영, 황수연
+- 스터디장 : [조영서](https://github.com/dudrhy12)
+- 스터디원 : 정채영, 황수연[https://github.com/syhwang1231]
 
 <br>
 
