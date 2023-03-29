@@ -28,6 +28,8 @@
   - `이름`/`주차.md`
     - ex) `이름`/`week2.md`
 
+<br>
+
 ## Commit 규칙
 - Commit Message는 다음을 참고합니다.
     - ➕ Feat: 실습, 과제 코드 파일이나 부수적인 코드 추가
