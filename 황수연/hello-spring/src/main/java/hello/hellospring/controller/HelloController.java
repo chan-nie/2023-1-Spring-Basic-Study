@@ -8,6 +8,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HelloController {
+
+    /* 여기서부터 2주차 과제 */
+    static class WeekTwo {
+        private String text;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+    }
+    @GetMapping("hello-weekTwo")
+    @ResponseBody
+    public WeekTwo helloWeek2(@RequestParam("text") String text, Model model) {
+        WeekTwo weekTwo = new WeekTwo();
+        weekTwo.text = text;
+        return weekTwo;
+    }
+
+    @GetMapping("hello-int")
+    @ResponseBody
+    public int helloInt(@RequestParam("number") int number, Model model) {
+        model.addAttribute("number", number);
+        return number;
+    }
+
+    /* 여기까지 2주차 과제 */
+
     @GetMapping("hello")
     public String hello(Model model){
         model.addAttribute("data", "hello!!");
