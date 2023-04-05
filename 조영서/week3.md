@@ -251,3 +251,23 @@ class MemberServiceTest {
 - when : 실행했을 때
 - then : 결과로 나와야 하는 것
 - Test는 예외 플로우도 중요 => 예외가 나오는 것을 봐야 함
+
+## 자바코드로 직접 스프링 빈 등록하기
+
+- @Service, @Repository, @Autowired 제거 후 진행
+
+1. [SpringConfig.java](http://SpringConfig.java) 생성
+
+```java
+@Configuration
+public class SpringConfig {
+@Bean
+public MemberService memberService() {
+return new MemberService(memberRepository());
+}
+@Bean
+public MemberRepository memberRepository() {
+return new MemoryMemberRepository();
+}
+}
+```
