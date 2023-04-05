@@ -43,6 +43,23 @@ public class HelloController {
             this.name = name;
         }
     }
+
+    //2주차 과제
+    @GetMapping("hello-lab")
+    public String helloLab(@RequestParam("hbd") int hbd, Model model) {
+        model.addAttribute("hbd", hbd);
+        return "hbd-template";
+    }
+    static class HBD {
+        private int hbd; //key
+
+        public int geHbd() {
+            return hbd;
+        }
+        public void setHbd(int hbd) {
+            this.hbd = hbd;
+        }
+    }
 }
 
 
