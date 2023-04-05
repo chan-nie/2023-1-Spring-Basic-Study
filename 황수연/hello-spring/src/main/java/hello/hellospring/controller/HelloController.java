@@ -30,10 +30,9 @@ public class HelloController {
     }
 
     @GetMapping("hello-int")
-    @ResponseBody
-    public int helloInt(@RequestParam("number") int number, Model model) {
+    public String helloInt(@RequestParam("number") int number, Model model) {
         model.addAttribute("number", number);
-        return number;
+        return "hello-int";
     }
 
     /* 여기까지 2주차 과제 */
