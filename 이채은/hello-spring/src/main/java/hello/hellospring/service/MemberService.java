@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public class MemberService {
         private final MemberRepository memberRepository=new MemoryMemberRepository();
-        public Long join(Member member){
+
+    public MemberService(MemberRepository memberRepository) {
+    }
+
+    public Long join(Member member){
             //같은 이름이 있늕 중복회원은 가입불가
             validateDuplicateMember(member);
             memberRepository.save(member);
