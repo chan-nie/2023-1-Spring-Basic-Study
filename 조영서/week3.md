@@ -252,11 +252,89 @@ class MemberServiceTest {
 - then : 결과로 나와야 하는 것
 - Test는 예외 플로우도 중요 => 예외가 나오는 것을 봐야 함
 
+# Section 4
+
+## 컴포넌트 스캔과 자동 의존관계 설정
+
+- 화면을 붙이려면 Controller와 View template이 필요
+- Member Controller가 Member Service를 통해 회원가입하고 조회할 수 있어야 함 ⇒ 의존 관계가 있다 표현 == 멤버 컨트롤러가 멤버 서비스를 의존한다
+
+1. /src/main/java/hello/hellospring/controller/MemberController.java 생성
+- MemberService를 Spring Contaioner로부터 받아 쓰도록 ⇒ 새로 생성할 필요 X, 하나만 가져와서 같이 쓰는 것이 나음
+- 결론 : 스프링 컨테이너에 하나만 등록하여 가져다 쓰기!
+
+```java
+@Controller
+public class MemberController {
+    private final MemberService memberService; //Memberservice 가져와 쓰기
+    @Autowired //Spring Container의 MemberService와 연결
+    public MemberController(MemberService memberService) { //생성자 호출
+        this.memberService = memberService;
+    }
+}
+```
+
+1. MemberService.java에 @Service 추가
+
+```java
+@Service
+public class MemberService {
+
+    private final MemberRepository memberRepository;
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+...
+}
+```
+
+- **Spring이 Spring Container에 MemberService를 등록하게 함**
+
+1. MemoryMemberRepository.java에 @Repository 추가
+
+```java
+@Repository
+public class MemoryMemberRepository implements MemberRepository { ... }
+```
+
+- Controller을 통해 외부 요청을 받고 ⇒ Service에서 비즈니스 로직을 만들고 ⇒ Repository에서 데이터를 저장 = 정형화된 패턴
+- Spring이 위 Controller, Service, Repository를 가지고 올라 옴 ⇒ @Autowired을 통해 연결 == Dependency Injection (의존관계 주입)
+
+- 스프링 빈 등록 이미지
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f22507cf-ec64-4790-842a-8d4d444c4bbd/Untitled.png)
+
+- @Autowired 로 memberController가 memberService를 쓸 수 있게 함
+- @Autowired 로 memberSeriv가 memberRepository를 쓸 수 있게 함
+
+- 스프링 빈을 등록하는 2가지 방법
+    - 컴포넌트 스캔과 자동 의존관계 설정 ⇒ 지금 한 것!
+    - 자바 코드로 직접 스프링 빈 등록하기
+
+- 컴포넌트 스캔 원리
+    - @Component 이 있으면 스프링 빈으로 자동 등록
+    - @Controller 가 스프링 빈으로 자동 등록된 이유도 컴포넌트 스캔이기 때문
+
+- @Component 를 포함하는 아래 어노테이션도 스프링 빈으로 자동 등록
+    - @Controller
+    - @Service
+    - @Repository
+
+- Component 스캔 대상 X
+    - 우리가 실행하는 파일의 패키지의 하위 패키지들은 자동으로 스프링 빈으로 등록
+    - 하위 패키지가 동일하거나 아닌 것들은 기본적으로 스프링 빈으로 Componenet 스캔 X
+
+- 참고
+    - 스프링은 스프링 컨테이너에 스프링 빈을 등록할 때 기본으로 싱글톤으로 등록
+    - 같은 스프링 빈이면 같은 인스턴스
+    - 추가 설정은 가능
+
 ## 자바코드로 직접 스프링 빈 등록하기
 
 - @Service, @Repository, @Autowired 제거 후 진행
 
-1. SpringConfig.java 생성
+1. [SpringConfig.java](http://SpringConfig.java) 생성
 
 ```java
 @Configuration
@@ -280,3 +358,53 @@ public class SpringConfig {
 - 실무에서는 주로 정형화된 컨트롤러, 서비스, 리포지토리 같은 코드는 컴포넌트 스캔을 사용, 정형화 되지 않거나 상황에 따라 구현 클래스를 변경해야 하면 설정을 통해 스프링 빈으로 등록
 
 - @Autowired 를 통한 DI는 helloController , memberService 등과 같이 스프링이 관리하는 객체에서만 동작, 스프링 빈으로 등록하지 않고 내가 직접 생성한 객체에서는 동작 X
+
+
+
+# Section 4 - Lab
+
+## 스프링 의존성 주입 3가지 방법
+
+### 의존성 주입 = Dependency Injection = DI
+
+- ~~프로그램 디자인이 결합도를 느슨하게 되도록하고 의존관계 역전 원칙과 단일 책임 원칙을 따르도록 클라이언트의 생성에 대한 의존성을 클라이언트의 행위로 분리하는 것 by 위키피디아~~
+- 의존 관계란?
+    - A가 B를 의존한다 = 의존대상 B가 변하면 그것이 A에 영향을 미친다
+    - 다양하게 의존 관계를 맺으려면 인터페이스로 추상화 해야 함 ⇒ 실제 구현 클래스와의 관계는 느슨해지고 결합도가 낮아짐
+- 의존 관계 주입이란?
+    - 의존관계를 외부에서 결정하고 주입하는 것
+    - 클래스 변수를 결정하는 방법 = DI를 구현하는 방법
+    - 런타인 시점의 의존관계를 외부에서 주입하여 DI 구현 완성
+- DI 장점
+    - 의존성/종속성 ↓ : 변화가 있더라도 수정할 일이 적다
+    - 재사용성 ↑ : 다른 클래스에서도 사용 가능
+    - 테스트 용이
+    - 유연한 코드 by 낮은 결합도
+- 참고 : [의존관계 주입(Dependency Injection) 쉽게 이해하기 (techcourse.co.kr)](https://tecoble.techcourse.co.kr/post/2021-04-27-dependency-injection/)
+
+### 방법
+
+1. Field(필드) 주입
+2. Setter(수정자) 주입
+3. Constructor(생성자) 주입
+
+### Field 주입
+
+- 멤버 객체에 @Autowired 추가
+- Spring 런타임시 ⇒ 타입이 같은 객체를 검색해 사용 or 없으면 생성 후 등록
+- 코드가 간결하나 외부에서 변경이 어려움
+- 프레임 워크에 의존적
+- 객체지향적으로 좋지 않음
+
+### Setter 주입
+
+- setter 메소드에 @Autowired 선언 ⇒ setter 메소드의 파라미터에 해당하는 객체를 빈에서 불러옴
+- 변경 용이
+
+### Constructor 주입
+
+- 빈이 만들어지는 시점에 모든 의존 관계를 빈에서 가져와야 함
+- 스프링 프레임워크에서 권장
+    - 순환 참조 방지
+    - 변경의 가능성 배제, 불변성 보장
+    - 테스트 용이
