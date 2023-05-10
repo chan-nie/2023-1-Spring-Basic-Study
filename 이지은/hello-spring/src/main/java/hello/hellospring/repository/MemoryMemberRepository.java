@@ -1,7 +1,6 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
@@ -17,6 +16,14 @@ public class MemoryMemberRepository implements MemberRepository {
         return member;
     }
 
+    /*4주차 과제*/
+    @Override
+    public Member deleteByName(Member member) {
+        Optional<Member> optionalMember = findByName(member.getName());
+        Member foundMember = optionalMember.get();
+        store.remove(foundMember.getId()); /*name의 id값을 이용해 remove*/
+        return foundMember;
+    }
     @Override
     public Optional<Member> findById(Long id) {
         return Optional.ofNullable(store.get(id));
