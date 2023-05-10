@@ -51,4 +51,10 @@ public class MemberService {
     public Optional<Member> findOne(Long memberId) {
         return memberRepository.findById(memberId);
     }
+
+    public void deleteMember(Member member){
+        memberRepository.findByName(member.getName()).ifPresent(m -> {
+            memberRepository.delete(m.getName());
+        });
+    }
 }
