@@ -49,4 +49,11 @@ public class MemberService {
     public Optional<Member> findOne(Long memberId){
         return memberRepository.findById(memberId);
     }
+
+    /* 4주차 과제 - 회원 삭제 */
+
+    public Optional<Member> findOneByName(String memberName){
+        return memberRepository.findByName(memberName);
+    }
+    public void deleteMember(Member member){ ((MemoryMemberRepository)memberRepository).deleteMember(member);  }
 }
