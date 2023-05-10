@@ -1,6 +1,7 @@
 package hello.hellospring.controller;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,16 @@ public class MemberController {
         List<Member> members = memberService.findMembers();
         model.addAttribute("members", members);
         return "members/memberlist";
+    }
+
+    @PostMapping("/members/del")
+    public String delete(MemberForm form) {
+        Member member = new Member();
+        member.setName(form.getName());
+
+        memberService.deleteMember(member);
+
+        return "redirect:/";
     }
 
 }

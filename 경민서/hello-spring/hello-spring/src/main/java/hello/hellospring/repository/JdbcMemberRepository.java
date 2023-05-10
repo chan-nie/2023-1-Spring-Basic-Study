@@ -95,6 +95,12 @@ public class JdbcMemberRepository implements MemberRepository {
             close(conn, pstmt, rs);
         }
     }
+
+    @Override
+    public void delete(String name) {
+        // 비워 둠
+    }
+
     @Override
     public Optional<Member> findByName(String name) {
         String sql = "select * from member where name = ?";
