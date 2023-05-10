@@ -47,4 +47,12 @@ public class MemberController {
         model.addAttribute("members", members);
         return "members/memberList";
     }
+
+    /* 4주차 과제 - 회원 삭제 */
+    @GetMapping("/members/delete")
+    public String delete(DeleteMemberForm deleteMemberForm){
+        Member member = memberService.findOneByName(deleteMemberForm.getName()).get();
+        memberService.deleteMember(member);
+        return "redirect:/";
+    }
 }

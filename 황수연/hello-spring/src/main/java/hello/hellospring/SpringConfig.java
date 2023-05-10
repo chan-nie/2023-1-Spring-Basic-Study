@@ -28,8 +28,9 @@ public class SpringConfig {
 
     @Bean
     public MemberRepository memberRepository(){
-        //return new MemoryMemberRepository();
+        /* 4주차 과제 위해 주석 처리 취소 */
+        return new MemoryMemberRepository();
         //return new JdbcMemberRepository(dataSource);
-        return new JdbcTemplateMemberRepository(dataSource);
+        //return new JdbcTemplateMemberRepository(dataSource);
     }
 }

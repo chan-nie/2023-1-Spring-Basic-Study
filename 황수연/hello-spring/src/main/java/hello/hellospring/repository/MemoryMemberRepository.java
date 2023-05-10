@@ -39,4 +39,7 @@ public class MemoryMemberRepository implements MemberRepository{
     public void clearStore() {
         store.clear();
     }
+
+    /* 4주차 과제 - 메모리에서 해당 멤버 삭제 */
+    public void deleteMember(Member member) { store.remove(member); }
 }
