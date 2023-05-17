@@ -55,10 +55,10 @@ public class JdbcTemplateMemberRepository implements MemberRepository{
         return jdbcTemplate.query("select * from member", memberRowMapper());
     }
 
-    @Override
-    public void delete(String name) {
-        jdbcTemplate.update("delete * from member where id = ?", memberRowMapper(), name);
-    }
+//    @Override
+//    public void delete(String name) {
+//        jdbcTemplate.update("delete * from member where id = ?", memberRowMapper(), name);
+//    }
 
     private RowMapper<Member> memberRowMapper() {
         return (rs, rowNum) -> {

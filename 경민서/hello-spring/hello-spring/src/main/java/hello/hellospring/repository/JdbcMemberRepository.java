@@ -96,10 +96,10 @@ public class JdbcMemberRepository implements MemberRepository {
         }
     }
 
-    @Override
-    public void delete(String name) {
-        // 비워 둠
-    }
+//    @Override
+//    public void delete(String name) {
+//        // 비워 둠
+//    }
 
     @Override
     public Optional<Member> findByName(String name) {
