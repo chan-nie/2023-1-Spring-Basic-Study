@@ -19,6 +19,7 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
             this.memberService = memberService;
+            System.out.println("memberService = " + memberService.getClass());
     }
 
     @GetMapping("/members/new")
@@ -43,14 +44,14 @@ public class MemberController {
         return "members/memberlist";
     }
 
-    @PostMapping("/members/del")
-    public String delete(MemberForm form) {
-        Member member = new Member();
-        member.setName(form.getName());
-
-        memberService.deleteMember(member);
-
-        return "redirect:/";
-    }
+//    @PostMapping("/members/del")
+//    public String delete(MemberForm form) {
+//        Member member = new Member();
+//        member.setName(form.getName());
+//
+//        memberService.deleteMember(member);
+//
+//        return "redirect:/";
+//    }
 
 }

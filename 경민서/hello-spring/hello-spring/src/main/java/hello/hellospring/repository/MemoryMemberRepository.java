@@ -38,10 +38,10 @@ public class MemoryMemberRepository implements MemberRepository {
         return new ArrayList<>(store.values()); // 모든 value 반환
     }
 
-    @Override
-    public void delete(String name) {
-        store.remove(name);
-    }
+//    @Override
+//    public void delete(String name) {
+//        store.remove(name);
+//    }
 
     public void clearStore() {
         store.clear();
