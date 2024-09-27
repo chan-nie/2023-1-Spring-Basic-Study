@@ -252,3 +252,54 @@ public class HelloController {
 
 - 구동 방식
     - 변환하여 웹 브라우저에 반환하는 것이 포인트
+
+## **API**
+
+1. HelloController.java에 추가
+
+```
+@GetMapping("hello-string")
+@ResponseBody
+public String helloString(@RequestParam("name") String name) {
+    return "hello " + name;
+}
+```
+
+- @ResponseBody : http의 body부분에 데이터를 직접 넣어주겠다는 뜻, 요청한 클라이언트에  내려감, 템플릿 엔진과 달리 View가 없음
+    
+    그대로
+    
+
+```
+@GetMapping("hello-api")
+@ResponseBody
+public Hello helloApi(@RequestParam("name") String name) {//객체 생성
+    Hello hello = new Hello();
+    hello.setName(name);//파라미터로 넘어온 name을 넣음return hello;//객체를 넘김
+}
+static class Hello {
+    private String name;//keypublic String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+- Json 방식으로 데이터를 넘김
+
+Json은 속성-값 쌍, 배열 자료형 또는 기타 모든 시리얼화 가능한 값 또는 "키-값 쌍"으로 이루어진 데이터 오브젝트를 전달하기 위해 인간이 읽을 수 있는 텍스트를 사용하는 개방형 표준 포맷이다.
+
+요즘 추세는 JSON 방식, Spring도 기본이 JSON 방식으로 반환하는 것이다.
+
+- @ResponseBody 사용 원리
+
+![https://blog.kakaocdn.net/dn/rmLKN/btr7QnmdX1z/HQWA0uOtNW1ptvC7gw2JJk/img.png](https://blog.kakaocdn.net/dn/rmLKN/btr7QnmdX1z/HQWA0uOtNW1ptvC7gw2JJk/img.png)
+
+- HTTP의 BODY에 문자 내용을 직접 반환
+- viewResolver 대신에 HttpMessageConverter 가 동작
+- 기본 문자처리: StringHttpMessageConverter
+- 기본 객체처리: MappingJackson2HttpMessageConverter (객체를 Json으로 바)
+- byte 처리 등등 기타 여러 HttpMessageConverter가 기본으로 등록되어 있음
+- 객체가 오면 Json 방식으로 데이터를 만들어 Http 응답에 반환하겠다는 것이 기본 정책
